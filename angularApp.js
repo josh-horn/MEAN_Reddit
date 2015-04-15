@@ -1,15 +1,10 @@
-var mongoose= require('mongoose');
-var passport = require('passport');
-require('./models/Posts');
-require('./models/Comments');
-require('./models/Users');
-require('./config/passport');
-mongoose.connect('mongodb://localhost/news');
+var app = angular.module('RedditMeanStack', ['ui.router']);
 
-var app = angular.module('flapperNews', ['ui.router]);
 app.config([
+  
 '$stateProvider',
 '$urlRouterProvider',
+
 function($stateProvider, $urlRouterProvider) {
   $stateProvider
     .state('home', {
@@ -19,17 +14,15 @@ function($stateProvider, $urlRouterProvider) {
     });
   $urlRouterProvider.otherwise('home');
 }]);
+
 app.factory('posts', [function(){
   var o = {
     posts: []
   };
   return o;
 }]);
-.state('posts', {
-  url: '/posts/{id}',
-  templateUrl: '/posts.html',
-  controller: 'PostsCtrl'
-});
+
+
 app.controller('PostsCtrl', [
 '$scope',
 '$stateParams',
@@ -37,7 +30,8 @@ app.controller('PostsCtrl', [
 function($scope, $stateParams, posts){
   $scope.posts = posts.posts;
   $scope.post = posts.posts[$stateParams.id];
-)};
+
+
 $scope.posts = [
   {title: 'post 1', upvotes: 5},
   {title: 'post 2', upvotes: 2},
@@ -45,8 +39,10 @@ $scope.posts = [
   {title: 'post 4', upvotes: 9},
   {title: 'post 5', upvotes: 4}
 ];
+
 $scope.addPost = function(){
   if(!$scope.title || $scope.title === '') { return; }
+  
 $scope.posts.push({
   title: $scope.title,
   link: $scope.link,
@@ -56,12 +52,15 @@ $scope.posts.push({
     {author: 'Bob', body: 'Great idea but everything is wrong!', upvotes: 0}
   ]
 });
+
   $scope.title = '';
   $scope.link = '';
 };
+
 $scope.incrementUpvotes = function(post) {
   post.upvotes += 1;
 };
+
 $scope.addComment = function(){
   if($scope.body === '') { return; }
   $scope.post.comments.push({
@@ -71,3 +70,4 @@ $scope.addComment = function(){
   });
   $scope.body = '';
 };
+}]);
