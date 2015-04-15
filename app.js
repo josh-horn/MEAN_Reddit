@@ -1,16 +1,19 @@
+var mongoose= require('mongoose');
+require('./models/Posts');
+require('./models/Comments');
+mongoose.connect('mongodb://localhost/news');
+
 var app = angular.module('flapperNews', ['ui.router]);
 app.config([
 '$stateProvider',
 '$urlRouterProvider',
 function($stateProvider, $urlRouterProvider) {
-
   $stateProvider
     .state('home', {
       url: '/home',
       templateUrl: '/home.html',
       controller: 'MainCtrl'
     });
-
   $urlRouterProvider.otherwise('home');
 }]);
 app.factory('posts', [function(){
@@ -32,7 +35,6 @@ function($scope, $stateParams, posts){
   $scope.posts = posts.posts;
   $scope.post = posts.posts[$stateParams.id];
 )};
-
 $scope.posts = [
   {title: 'post 1', upvotes: 5},
   {title: 'post 2', upvotes: 2},
@@ -40,7 +42,6 @@ $scope.posts = [
   {title: 'post 4', upvotes: 9},
   {title: 'post 5', upvotes: 4}
 ];
-
 $scope.addPost = function(){
   if(!$scope.title || $scope.title === '') { return; }
 $scope.posts.push({
@@ -55,7 +56,6 @@ $scope.posts.push({
   $scope.title = '';
   $scope.link = '';
 };
-
 $scope.incrementUpvotes = function(post) {
   post.upvotes += 1;
 };
